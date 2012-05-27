@@ -33,13 +33,24 @@ class RankerTest extends PHPUnit_Framework_TestCase {
 
   public function testSort() {
     $ranker = new Ranker();
-    $ranker->sortByOrderByParameter($this->rankables);
+    $ranker->sort($this->rankables);
 
     $actual_first = $this->rankables[0]->name;
     $this->assertEquals("aaa", $actual_first);
     $last = count($this->rankables) - 1;
     $actual_last = $this->rankables[$last]->name;
     $this->assertEquals("iii", $actual_last);
+  }
+  
+  public function testSortAscending() {
+    $ranker = new Ranker();
+    $ranker->sort($this->rankables, FALSE);
+
+    $actual_first = $this->rankables[0]->name;
+    $this->assertEquals("iii", $actual_first);
+    $last = count($this->rankables) - 1;
+    $actual_last = $this->rankables[$last]->name;
+    $this->assertEquals("aaa", $actual_last);
   }
   
   public function testCompetitionRanking() {

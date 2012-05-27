@@ -38,7 +38,7 @@ class Ranker {
    * Set the name of the property on which the objects' ranking will be based on ( default is 'score' ).
    * @param String  The name of the property to base the ranking on.
    */
-  public function setPropertyToSortOn($orderBy) {
+  public function setOrderBy($property) {
     $this->orderBy = $orderBy;
   }
   
@@ -46,7 +46,7 @@ class Ranker {
    * Get the name of the property on which the objects' ranking will be based on ( default is 'score' ).
    * @param String  The name of the property to base the ranking on.
    */
-  public function getPropertyToSortOn($orderBy) {
+  public function getOrderBy() {
     return $this->orderBy;
   }
 
@@ -54,25 +54,33 @@ class Ranker {
    * Ranks and sorts the provided array. The ranking number will be added as a ranking property.
    * @param Array Array of objects to rank
    */
-  public function rank(&$rankables) {
+  public function rank(&$rankables, $descending = TRUE) {
     $last_rankable = null;
     $rank = $this->rankFunction;
-    $this->sortByOrderByParameter(&$rankables);
+    $this->sort(&$rankables, $descending);
     foreach ($rankables as $ranking_index => $rankable) {
       $this->$rank($rankable, $last_rankable, $ranking_index);
       $last_rankable = $rankable;
     }
   }
 
-  public function sortByOrderByParameter(&$rankables) {
+  /**
+   * Sort the provided array without assignin rankings. 
+   * @param Array Array of objects to sort
+   */
+  public function sort(&$rankables, $descending = TRUE) {
     $orderBy = $this->orderBy;
-    $compare = function($object1, $object2) use ($orderBy) {
+    $compare = function($object1, $object2) use ($orderBy, $descending) {
       $a = $object1->$orderBy;
       $b = $object2->$orderBy;
       if ( $a == $b ) {
         return 0;
       }
-      return ( $a > $b ) ? -1 : 1;
+      if ($descending) {
+        return ( $a > $b ) ? -1 : 1;
+      } else {
+        return ( $a > $b ) ? 1 : -1;
+      }
     };
     usort($rankables, $compare);
   }
