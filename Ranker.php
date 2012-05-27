@@ -38,7 +38,7 @@ class Ranker {
    * @param String  The name of the property to base the ranking on.
    */
   public function setOrderBy($property) {
-    $this->orderBy = $orderBy;
+    $this->orderBy = $property;
   }
   
   /**
@@ -55,7 +55,7 @@ class Ranker {
    */
   public function rank(&$rankables, $descending = TRUE) {
     $this->strategy->setOrderBy($this->orderBy);
-    $this->sort(&$rankables, $descending);
+    $this->sort($rankables, $descending);
     $this->strategy->rank($rankables);
   }
 

@@ -24,6 +24,7 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     return (object) array(
       'name' => $name,
       'score' => $score,
+      'inverseScore' => 100 - $score,
       'ranking' => 0,
     );
   }
@@ -76,15 +77,22 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   public function testOrdinalRanking() {
     $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
+    $this->assertFirstAndLastNameValue('aaa', 'iii');
+  }
+  
+  public function testSettingOrderBy() {
+    $this->ranker->setOrderBy('inverseScore');
+    $this->applyRankingStrategy('ordinal');
+    $this->assertRanking("123456789", $this->rankables);
+    $this->assertFirstAndLastNameValue('iii', 'aaa');
   }
   
   /**
    * Helper to test ranking strategies
    */
   private function applyRankingStrategy($strategy) {
-    $ranker = new Ranker();
-    $ranker->setRankingStrategy($strategy);
-    $ranker->rank($this->rankables);
+    $this->ranker->setRankingStrategy($strategy);
+    $this->ranker->rank($this->rankables);
   }
   
   /** 
