@@ -52,7 +52,7 @@ class Ranker {
   
   /**
    * Get the name of the property on which the objects' ranking will be based on ( default is 'score' ).
-   * @param String  The name of the property to base the ranking on.
+   * @return String  The name of the property to base the ranking on.
    */
   public function getOrderBy() {
     return $this->orderBy;
