@@ -8,7 +8,16 @@ class Ranker {
   public function __construct() {
     $this->strategy = new OrdinalStrategy();
   }
-
+  
+  /**
+   * Sets a ranking strategy. The possibilities are:  
+   * - 'competition' : Standard Competition Ranking ( 1224 )
+   * - 'modified'    : Modified Competition Ranking ( 1334 )
+   * - 'dense'       : Dense Ranking                ( 1223 )
+   * - 'ordinal'     : Ordinal Ranking              ( 1234 )
+   *
+   * @param String  $strategyName  Name of the strategy. ('competition', 'modified', 'dense' or 'ordinal')
+   */
   public function setRankingStrategy($strategyName) {
     switch ($strategyName) {
       case 'competition':
