@@ -80,7 +80,7 @@ class Ranker {
   /**
    * Standard competition strategy ( 1224 )
    */ 
-  public function rankUsingCompetionRanking(&$rankable, $last_rankable, $ranking_index) {
+  protected function rankUsingCompetionRanking($rankable, $last_rankable, $ranking_index) {
     if ($last_rankable == null) {
       $rankable->ranking = 1;
     } else if ($rankable->score == $last_rankable->score) {
@@ -93,7 +93,7 @@ class Ranker {
   /**
    * Modified competition strategy ( 1334 )
    */
-  public function rankUsingModifiedCompetionRanking(&$rankable, $last_rankable, $ranking_index) {
+  protected function rankUsingModifiedCompetionRanking($rankable, $last_rankable, $ranking_index) {
     if ($last_rankable == null) {
       $rankable->ranking = 1;
     } else if ($rankable->score == $last_rankable->score) {
@@ -114,7 +114,7 @@ class Ranker {
   /**
    * Dense ranking strategy ( 1223 )
    */ 
-  public function rankUsingDenseRanking(&$rankable, $last_rankable, $ranking_index = null) {
+  protected function rankUsingDenseRanking($rankable, $last_rankable, $ranking_index = null) {
     if ($last_rankable == null) {
       $rankable->ranking = 1;
     } else if ($rankable->score == $last_rankable->score) {
@@ -127,7 +127,7 @@ class Ranker {
   /**
    * Ordinal ranking strategy ( 1234 )
    */ 
-  public function rankUsingOrdinalRanking(&$rankable, $last_rankable, $ranking_index = null) {
+  protected function rankUsingOrdinalRanking($rankable, $last_rankable, $ranking_index = null) {
     $rankable->ranking = $ranking_index + 1;
   }
   
