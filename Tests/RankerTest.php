@@ -25,14 +25,6 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     );
   }
 
-  private function assertRanking($expected, $rankables) {
-    $actual = "";
-    foreach ($rankables as $rankable) {
-      $actual .= $rankable->ranking;
-    }
-    $this->assertEquals($expected, $actual);
-  }
-
   public function testSettingRankingStrategy() {
     $ranker = new Ranker();
     $ranker->setRankingStrategy(RankingStrategy::COMPETITION);
@@ -47,15 +39,6 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("aaa", $actual_first);
     $actual_last = $this->rankables[3]->name;
     $this->assertEquals("ddd", $actual_last);
-  }
- 
-  /**
-   * Helper to test ranking strategies
-   */
-  private function applyRankingStrategy($strategy) {
-    $ranker = new Ranker();
-    $ranker->setRankingStrategy($strategy);
-    $ranker->rank($this->rankables);
   }
   
   public function testCompetitionRanking() {
@@ -78,4 +61,24 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->assertRanking("123456789", $this->rankables);
   }
   
+  /**
+   * Helper to test ranking strategies
+   */
+  private function applyRankingStrategy($strategy) {
+    $ranker = new Ranker();
+    $ranker->setRankingStrategy($strategy);
+    $ranker->rank($this->rankables);
+  }
+  
+  /** 
+   * Helps asserting ranking methods work as expected.
+   */
+  private function assertRanking($expected, $rankables) {
+    $actual = "";
+    foreach ($rankables as $rankable) {
+      $actual .= $rankable->ranking;
+    }
+    $this->assertEquals($expected, $actual);
+  }
+
 }
