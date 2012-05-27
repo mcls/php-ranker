@@ -1,0 +1,13 @@
+<phpunit colors="true"
+         bootstrap="./Tests/bootstrap.php"
+         verbose="false">
+  <testsuites>
+    <testsuite name="Ranker">
+      <directory>Tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <includePath>.</includePath>
+    <ini name="display_errors" value="true"/>
+  </php>
+</phpunit>
