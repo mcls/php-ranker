@@ -24,7 +24,7 @@ class Ranker {
         $this->strategy = new OrdinalStrategy();
         break;
       default:
-        throw new Exception("Ranking strategy '$strategy' not found!");
+        throw new UnknownRankingStrategyException("Ranking strategy '$strategyName' not found!");
     } 
     $this->strategyName = $strategyName;
   }
@@ -167,4 +167,8 @@ class OrdinalStrategy extends RankingStrategy {
   protected function assignRanking($rankable, $last_rankable, $ranking_index) {
     $rankable->ranking = $ranking_index + 1;
   }
+}
+
+class UnknownRankingStrategyException extends Exception {
+
 }

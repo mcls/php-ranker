@@ -2,8 +2,11 @@
 class RankerTest extends PHPUnit_Framework_TestCase {
 
   private $rankables = array();
+  private $ranker = null;
 
   public function setUp() {
+    $this->ranker = new Ranker();
+
     $this->rankables[] = $this->createRankable("bbb", 75);  
     $this->rankables[] = $this->createRankable("ddd", 50);  
     $this->rankables[] = $this->createRankable("ccc", 75);  
@@ -26,31 +29,33 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testSettingRankingStrategy() {
-    $ranker = new Ranker();
-    $ranker->setRankingStrategy('competition');
-    $this->assertEquals("competition", $ranker->getRankingStrategy());
+    $this->ranker->setRankingStrategy('competition');
+    $this->assertEquals("competition", $this->ranker->getRankingStrategy());
+  }
+ 
+  /**
+   * @expectedException UnknownRankingStrategyException
+   */
+  public function testSettingNonExistingRankingStrategyThrowsException() {
+    $this->ranker->setRankingStrategy('dmsqlfkjds');
   }
 
   public function testSort() {
-    $ranker = new Ranker();
-    $ranker->sort($this->rankables);
-
-    $actual_first = $this->rankables[0]->name;
-    $this->assertEquals("aaa", $actual_first);
-    $last = count($this->rankables) - 1;
-    $actual_last = $this->rankables[$last]->name;
-    $this->assertEquals("iii", $actual_last);
+    $this->ranker->sort($this->rankables);
+    $this->assertFirstAndLastNameValue('aaa', 'iii');
   }
   
   public function testSortAscending() {
-    $ranker = new Ranker();
-    $ranker->sort($this->rankables, FALSE);
+    $this->ranker->sort($this->rankables, FALSE);
+    $this->assertFirstAndLastNameValue('iii', 'aaa');
+  }
 
+  private function assertFirstAndLastNameValue($expected_first, $expected_last) {
     $actual_first = $this->rankables[0]->name;
-    $this->assertEquals("iii", $actual_first);
+    $this->assertEquals($expected_first, $actual_first);
     $last = count($this->rankables) - 1;
     $actual_last = $this->rankables[$last]->name;
-    $this->assertEquals("aaa", $actual_last);
+    $this->assertEquals($expected_last, $actual_last);
   }
   
   public function testCompetitionRanking() {
