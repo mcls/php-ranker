@@ -19,8 +19,9 @@ Use `setRankingStrategy()` to choose one of the predefined strategies:
 Then use `$ranker->rank($objectsToRank)` to apply the rankings to an array of objects to rank.
 
 Example:  
-
+```php
     <?php
     $ranker = new Ranker();
     $ranker->setRankingStrategy(RankingStrategy::DENSE);
     $ranker->rank($objectsToRank);  
+```
