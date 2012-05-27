@@ -37,8 +37,9 @@ class RankerTest extends PHPUnit_Framework_TestCase {
 
     $actual_first = $this->rankables[0]->name;
     $this->assertEquals("aaa", $actual_first);
-    $actual_last = $this->rankables[3]->name;
-    $this->assertEquals("ddd", $actual_last);
+    $last = count($this->rankables) - 1;
+    $actual_last = $this->rankables[$last]->name;
+    $this->assertEquals("iii", $actual_last);
   }
   
   public function testCompetitionRanking() {
