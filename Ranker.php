@@ -1,37 +1,36 @@
 <?php
 class Ranker {
   
-  private $strategy = 'ordinal'; 
-  private $rankFunction = 'rankUsingOrdinalRanking';
+  private $strategyName = 'ordinal'; 
+  private $strategy;
   private $orderBy = 'score';
-  // Used in modified ranking strategy
-  private $equally_ranked = array();
 
   public function __construct() {
+    $this->strategy = new OrdinalStrategy();
   }
 
-  public function setRankingStrategy($strategy) {
-    switch ($strategy) {
-      case RankingStrategy::COMPETITION:
-        $this->rankFunction = 'rankUsingCompetionRanking'; 
+  public function setRankingStrategy($strategyName) {
+    switch ($strategyName) {
+      case 'competition':
+        $this->strategy = new StandardCompetitionStrategy();
         break;
-      case RankingStrategy::MODIFIED_COMPETITION:
-        $this->rankFunction = 'rankUsingModifiedCompetionRanking'; 
+      case 'modified':
+        $this->strategy = new ModifiedCompetitionStrategy();
         break;
-      case RankingStrategy::DENSE:
-        $this->rankFunction = 'rankUsingDenseRanking'; 
+      case 'dense':
+        $this->strategy = new DenseStrategy();
         break;
-      case RankingStrategy::ORDINAL:
-        $this->rankFunction = 'rankUsingOrdinalRanking'; 
+      case 'ordinal':
+        $this->strategy = new OrdinalStrategy();
         break;
       default:
         throw new Exception("Ranking strategy '$strategy' not found!");
     } 
-    $this->strategy = $strategy;
+    $this->strategyName = $strategyName;
   }
 
   public function getRankingStrategy() {
-    return $this->strategy;
+    return $this->strategyName;
   }
 
   /**
@@ -55,13 +54,9 @@ class Ranker {
    * @param Array Array of objects to rank
    */
   public function rank(&$rankables, $descending = TRUE) {
-    $last_rankable = null;
-    $rank = $this->rankFunction;
+    $this->strategy->setOrderBy($this->orderBy);
     $this->sort(&$rankables, $descending);
-    foreach ($rankables as $ranking_index => $rankable) {
-      $this->$rank($rankable, $last_rankable, $ranking_index);
-      $last_rankable = $rankable;
-    }
+    $this->strategy->rank($rankables);
   }
 
   /**
@@ -85,26 +80,55 @@ class Ranker {
     usort($rankables, $compare);
   }
 
-  /**
-   * Standard competition strategy ( 1224 )
-   */ 
-  protected function rankUsingCompetionRanking($rankable, $last_rankable, $ranking_index) {
+}
+
+abstract class RankingStrategy {
+  protected $orderBy = 'score';
+
+  public function setOrderBy($property) {
+    $this->orderBy = $property;
+  }
+
+  public function rank($sortedRankables) {
+    $last_rankable = null;
+    foreach ($sortedRankables as $ranking_index => $rankable) {
+      $this->assignRanking($rankable, $last_rankable, $ranking_index);
+      $last_rankable = $rankable;
+    }
+  }
+
+  abstract protected function assignRanking($rankable, $last_rankable, $ranking_index);
+}
+
+/**
+ * Standard competition strategy ( 1224 )
+ */ 
+class StandardCompetitionStrategy extends RankingStrategy {
+  protected function assignRanking($rankable, $last_rankable, $ranking_index) {
+    $property = $this->orderBy;
     if ($last_rankable == null) {
       $rankable->ranking = 1;
-    } else if ($rankable->score == $last_rankable->score) {
+    } else if ($rankable->$property == $last_rankable->$property) {
       $rankable->ranking = $last_rankable->ranking;
     } else {
       $rankable->ranking = $ranking_index + 1;
     }
   }
+}
 
-  /**
-   * Modified competition strategy ( 1334 )
-   */
-  protected function rankUsingModifiedCompetionRanking($rankable, $last_rankable, $ranking_index) {
+  
+/**
+ * Modified competition strategy ( 1334 )
+ */
+class ModifiedCompetitionStrategy extends RankingStrategy {
+
+  private $equally_ranked = array();
+
+  protected function assignRanking($rankable, $last_rankable, $ranking_index) {
+    $property = $this->orderBy;
     if ($last_rankable == null) {
       $rankable->ranking = 1;
-    } else if ($rankable->score == $last_rankable->score) {
+    } else if ($rankable->$property == $last_rankable->$property) {
       $this->equally_ranked[] = $rankable;
       $this->updateEquallyRanked($ranking_index);
     } else {
@@ -118,32 +142,29 @@ class Ranker {
       $r->ranking = $ranking_index + 1;
     }
   }
-  
-  /**
-   * Dense ranking strategy ( 1223 )
-   */ 
-  protected function rankUsingDenseRanking($rankable, $last_rankable, $ranking_index = null) {
+}
+
+/**
+ * Dense ranking strategy ( 1223 )
+ */ 
+class DenseStrategy extends RankingStrategy {
+  protected function assignRanking($rankable, $last_rankable, $ranking_index) {
+    $property = $this->orderBy;
     if ($last_rankable == null) {
       $rankable->ranking = 1;
-    } else if ($rankable->score == $last_rankable->score) {
+    } else if ($rankable->$property == $last_rankable->$property) {
       $rankable->ranking = $last_rankable->ranking;
     } else {
       $rankable->ranking = $last_rankable->ranking + 1;
     }
   }
+} 
   
-  /**
-   * Ordinal ranking strategy ( 1234 )
-   */ 
-  protected function rankUsingOrdinalRanking($rankable, $last_rankable, $ranking_index = null) {
+/**
+ * Ordinal ranking strategy ( 1234 )
+ */ 
+class OrdinalStrategy extends RankingStrategy {
+  protected function assignRanking($rankable, $last_rankable, $ranking_index) {
     $rankable->ranking = $ranking_index + 1;
   }
-  
-}
-
-class RankingStrategy {
-  const COMPETITION = 'competition';
-  const MODIFIED_COMPETITION = 'mod_competition';
-  const DENSE = 'dense';
-  const ORDINAL = 'ordinal';
 }

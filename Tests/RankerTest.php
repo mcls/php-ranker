@@ -27,7 +27,7 @@ class RankerTest extends PHPUnit_Framework_TestCase {
 
   public function testSettingRankingStrategy() {
     $ranker = new Ranker();
-    $ranker->setRankingStrategy(RankingStrategy::COMPETITION);
+    $ranker->setRankingStrategy('competition');
     $this->assertEquals("competition", $ranker->getRankingStrategy());
   }
 
@@ -54,22 +54,22 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testCompetitionRanking() {
-    $this->applyRankingStrategy(RankingStrategy::COMPETITION);
+    $this->applyRankingStrategy('competition');
     $this->assertRanking("122455589", $this->rankables);
   }
   
   public function testModifiedCompetitionRanking() {
-    $this->applyRankingStrategy(RankingStrategy::MODIFIED_COMPETITION);
+    $this->applyRankingStrategy('modified');
     $this->assertRanking("133477789", $this->rankables);
   }
 
   public function testDenseRanking() {
-    $this->applyRankingStrategy(RankingStrategy::DENSE);
+    $this->applyRankingStrategy('dense');
     $this->assertRanking("122344456", $this->rankables);
   }
   
   public function testOrdinalRanking() {
-    $this->applyRankingStrategy(RankingStrategy::ORDINAL);
+    $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
   }
   
