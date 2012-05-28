@@ -65,8 +65,10 @@ class Ranker {
   }
 
   /**
-   * Ranks and sorts the provided array. The ranking number will be added as a ranking property.
-   * @param Array Array of objects to rank
+   * Ranks and sorts the provided array. The ranking number will be added to 
+   * the 'ranking' property of the objects.
+   * @param Array &$rankables Array of objects to rank
+   * @param Boolean $descending Ascending or descending.
    */
   public function rank(&$rankables, $descending = TRUE) {
     $this->strategy->setOrderBy($this->orderBy);
@@ -75,8 +77,9 @@ class Ranker {
   }
 
   /**
-   * Sort the provided array without assignin rankings. 
-   * @param Array Array of objects to sort
+   * Sort the provided array without assigning rankings. 
+   * @param Array &$rankables Array of objects to sort.
+   * @param Boolean $descending Ascending or descending.
    */
   public function sort(&$rankables, $descending = TRUE) {
     $orderBy = $this->orderBy;
@@ -86,7 +89,7 @@ class Ranker {
       if ( $a == $b ) {
         return 0;
       }
-      if ($descending) {
+      if ( $descending ) {
         return ( $a > $b ) ? -1 : 1;
       } else {
         return ( $a > $b ) ? 1 : -1;
