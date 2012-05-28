@@ -1,9 +1,9 @@
 <phpunit colors="true"
-         bootstrap="./Tests/bootstrap.php"
+         bootstrap="./test/bootstrap.php"
          verbose="false">
   <testsuites>
     <testsuite name="Ranker">
-      <directory>Tests</directory>
+      <directory>test</directory>
     </testsuite>
   </testsuites>
   <php>
