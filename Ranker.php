@@ -25,7 +25,7 @@ class Ranker {
    *
    * @param String  $strategyName  Name of the strategy. ('competition', 'modified', 'dense' or 'ordinal')
    */
-  public function setRankingStrategy($strategyName) {
+  public function useStrategy($strategyName) {
     switch ($strategyName) {
       case 'competition':
         $this->strategy = new StandardCompetitionStrategy();
@@ -43,6 +43,7 @@ class Ranker {
         throw new UnknownRankingStrategyException("Ranking strategy '$strategyName' not found!");
     } 
     $this->strategyName = $strategyName;
+    return $this;
   }
 
   public function getRankingStrategy() {

@@ -30,7 +30,7 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testSettingRankingStrategy() {
-    $this->ranker->setRankingStrategy('competition');
+    $this->ranker->useStrategy('competition');
     $this->assertEquals("competition", $this->ranker->getRankingStrategy());
   }
  
@@ -38,7 +38,7 @@ class RankerTest extends PHPUnit_Framework_TestCase {
    * @expectedException UnknownRankingStrategyException
    */
   public function testSettingNonExistingRankingStrategyThrowsException() {
-    $this->ranker->setRankingStrategy('dmsqlfkjds');
+    $this->ranker->useStrategy('dmsqlfkjds');
   }
 
   public function testSort() {
@@ -98,8 +98,9 @@ class RankerTest extends PHPUnit_Framework_TestCase {
    * Helper to test ranking strategies
    */
   private function applyRankingStrategy($strategy) {
-    $this->ranker->setRankingStrategy($strategy);
-    $this->ranker->rank($this->rankables);
+    $this->ranker
+      ->useStrategy($strategy)
+      ->rank($this->rankables);
   }
   
   /** 
