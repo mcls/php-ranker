@@ -29,8 +29,8 @@ Then use `$ranker->rank($objectsToRank)` to apply the rankings to an array of ob
       ->orderBy('points')         // Property to base ranking on, Default is 'score'
       ->storeRankingIn('ranked')  // Default is 'ranking'
       ->rank($objectsToRank);  
-      
-    print_r($objectsToRank);
+   
+   print_r($objectsToRank);
 ```
 
 This will output something like:
