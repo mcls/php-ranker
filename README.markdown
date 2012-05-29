@@ -1,6 +1,7 @@
 # Ranker
 A simple class to assign rankings to objects in an array based on one of their properties.
 
+#### Usage  
 Use `useStrategy()` to choose one of the predefined strategies:
 
 ```
