@@ -18,5 +18,8 @@ Example:
     <?php
     $ranker = new Ranker();
     $ranker->setRankingStrategy('dense');
-    $ranker->rank($objectsToRank);  
+    $ranker
+      ->orderBy('points')         // Property to base rank on, Default is 'score'
+      ->storeRankingIn('ranked')  // Default is 'ranking'
+      ->rank($objectsToRank);    
 ```
