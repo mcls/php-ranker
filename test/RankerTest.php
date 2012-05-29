@@ -81,14 +81,14 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testSettingOrderBy() {
-    $this->ranker->setOrderBy('inverseScore');
+    $this->ranker->orderBy('inverseScore');
     $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
     $this->assertFirstAndLastNameValue('iii', 'aaa');
   }
   
   public function testAlternativeRankingProperty() {
-    $this->ranker->setRankingProperty('alternateRankingProperty');
+    $this->ranker->storeRankingIn('alternateRankingProperty');
     $this->applyRankingStrategy('ordinal');
 
     $this->assertEquals(1, $this->rankables[0]->alternateRankingProperty);

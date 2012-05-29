@@ -53,24 +53,18 @@ class Ranker {
    * Set the property to store the ranking in.
    * @param String $property Ranking property
    */
-  public function setRankingProperty($property) {
+  public function storeRankingIn($property) {
     $this->rankingProperty = $property;
+    return $this;
   }
 
   /**
    * Set the name of the property on which the objects' ranking will be based on ( default is 'score' ).
    * @param String  The name of the property to base the ranking on.
    */
-  public function setOrderBy($property) {
+  public function orderBy($property) {
     $this->orderBy = $property;
-  }
-  
-  /**
-   * Get the name of the property on which the objects' ranking will be based on ( default is 'score' ).
-   * @return String  The name of the property to base the ranking on.
-   */
-  public function getOrderBy() {
-    return $this->orderBy;
+    return $this;
   }
 
   /**
