@@ -22,10 +22,13 @@ include 'src/OrdinalStrategy.php';
 
 class Ranker {
   
+  // Ranking strategy
   private $strategyName = 'ordinal'; 
   private $strategy;
+  // Options
   private $rankingProperty = 'ranking';
   private $orderBy = 'score';
+  private $descending = TRUE;
 
   public function __construct() {
     $this->strategy = new OrdinalStrategy();
@@ -77,9 +80,11 @@ class Ranker {
   /**
    * Set the name of the property on which the objects' ranking will be based on ( default is 'score' ).
    * @param String  The name of the property to base the ranking on.
+   * @param Boolean $descending Ascending or descending.
    */
-  public function orderBy($property) {
+  public function orderBy($property, $descending = TRUE) {
     $this->orderBy = $property;
+    $this->descending = $descending;
     return $this;
   }
 
@@ -87,12 +92,14 @@ class Ranker {
    * Ranks and sorts the provided array. The ranking number will be added to 
    * the 'ranking' property of the objects.
    * @param Array &$rankables Array of objects to rank
-   * @param Boolean $descending Ascending or descending.
+   * @param Boolean $sortBeforeRanking Whether or not to sort the rankables before asigning ranks
    */
-  public function rank(&$rankables, $descending = TRUE) {
+  public function rank(&$rankables, $sortBeforeRanking = TRUE) {
+    if ($sortBeforeRanking) {
+      $this->sort($rankables);
+    }
     $this->strategy->setOrderBy($this->orderBy);
     $this->strategy->setRankingProperty($this->rankingProperty);
-    $this->sort($rankables, $descending);
     $this->strategy->rank($rankables);
   }
 
@@ -101,8 +108,9 @@ class Ranker {
    * @param Array &$rankables Array of objects to sort.
    * @param Boolean $descending Ascending or descending.
    */
-  public function sort(&$rankables, $descending = TRUE) {
+  public function sort(&$rankables) {
     $orderBy = $this->orderBy;
+    $descending = $this->descending;
     $compare = function($object1, $object2) use ($orderBy, $descending) {
       $a = $object1->$orderBy;
       $b = $object2->$orderBy;

@@ -47,7 +47,8 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testSortAscending() {
-    $this->ranker->sort($this->rankables, FALSE);
+    $this->ranker->orderBy('score', FALSE);
+    $this->ranker->sort($this->rankables);
     $this->assertFirstAndLastNameValue('iii', 'aaa');
   }
 
