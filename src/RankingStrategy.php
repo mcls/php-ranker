@@ -2,10 +2,19 @@
 abstract class RankingStrategy {
 
   protected $orderBy = 'score';
+  protected $rankingProperty = 'ranking';
   protected $last_rankable = null;
 
   public function setOrderBy($property) {
     $this->orderBy = $property;
+  }
+ 
+  /**
+   * Set the property to store the ranking in.
+   * @param String $property Ranking property
+   */
+  public function setRankingProperty($property) {
+    $this->rankingProperty = $property;
   }
 
   public function rank($sortedRankables) {
@@ -28,11 +37,14 @@ abstract class RankingStrategy {
   }
 
   protected function whenFirst($rankable, $ranking_index) {
-    $rankable->ranking = 1;
+    $this->setRanking($rankable, 1);
   }
 
   abstract protected function whenEqual($rankable, $ranking_index);
 
   abstract protected function whenDifferent($rankable, $ranking_index);
-
+  
+  protected function setRanking(&$rankable, $ranking) {
+    $rankable->{$this->rankingProperty} = $ranking;
+  }
 }

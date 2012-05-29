@@ -5,11 +5,11 @@
 class StandardCompetitionStrategy extends RankingStrategy {
   
   protected function whenEqual($rankable, $ranking_index) {
-    $rankable->ranking = $this->last_rankable->ranking;
+    $this->setRanking($rankable, $this->last_rankable->ranking);
   }
 
   protected function whenDifferent($rankable, $ranking_index) {
-    $rankable->ranking = $ranking_index + 1;
+    $this->setRanking($rankable, $ranking_index + 1);
   }
 
 }

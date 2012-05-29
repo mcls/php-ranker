@@ -20,12 +20,12 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->rankables[] = $this->createRankable("iii", 0);  
   }
 
-  private function createRankable($name, $score) {
+  private function createRankable($name, $score, $rankingProperty = 'ranking') {
     return (object) array(
       'name' => $name,
       'score' => $score,
       'inverseScore' => 100 - $score,
-      'ranking' => 0,
+      $rankingProperty => 0,
     );
   }
 
@@ -85,6 +85,13 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
     $this->assertFirstAndLastNameValue('iii', 'aaa');
+  }
+  
+  public function testAlternativeRankingProperty() {
+    $this->ranker->setRankingProperty('alternateRankingProperty');
+    $this->applyRankingStrategy('ordinal');
+
+    $this->assertEquals(1, $this->rankables[0]->alternateRankingProperty);
   }
   
   /**

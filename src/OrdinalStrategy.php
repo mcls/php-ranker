@@ -5,7 +5,7 @@
 class OrdinalStrategy extends RankingStrategy {
 
   protected function assignRanking($rankable, $ranking_index) {
-    $rankable->ranking = $ranking_index + 1;
+    $this->setRanking($rankable, $ranking_index + 1);
   }
   
   // Not used

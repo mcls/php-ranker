@@ -16,12 +16,12 @@ class ModifiedCompetitionStrategy extends RankingStrategy {
     $this->equalRanking[] = $rankable;
     // ranking = value after gap = $ranking_index + 1
     foreach ($this->equalRanking as $r) {
-      $r->ranking = $ranking_index + 1;
+      $this->setRanking($r, $ranking_index + 1);
     }
   }
 
   protected function whenDifferent($rankable, $ranking_index) {
-    $rankable->ranking = $ranking_index + 1;
+    $this->setRanking($rankable, $ranking_index + 1);
     $this->equalRanking = array($rankable);
   }
 

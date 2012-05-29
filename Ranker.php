@@ -9,6 +9,7 @@ class Ranker {
   
   private $strategyName = 'ordinal'; 
   private $strategy;
+  private $rankingProperty = 'ranking';
   private $orderBy = 'score';
 
   public function __construct() {
@@ -49,6 +50,14 @@ class Ranker {
   }
 
   /**
+   * Set the property to store the ranking in.
+   * @param String $property Ranking property
+   */
+  public function setRankingProperty($property) {
+    $this->rankingProperty = $property;
+  }
+
+  /**
    * Set the name of the property on which the objects' ranking will be based on ( default is 'score' ).
    * @param String  The name of the property to base the ranking on.
    */
@@ -72,6 +81,7 @@ class Ranker {
    */
   public function rank(&$rankables, $descending = TRUE) {
     $this->strategy->setOrderBy($this->orderBy);
+    $this->strategy->setRankingProperty($this->rankingProperty);
     $this->sort($rankables, $descending);
     $this->strategy->rank($rankables);
   }
