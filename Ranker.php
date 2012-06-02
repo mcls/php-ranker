@@ -109,21 +109,25 @@ class Ranker {
    * @param Boolean $descending Ascending or descending.
    */
   public function sort(&$rankables) {
+    $sortBy = $this->createCompareFunction();
+    usort($rankables, $sortBy);
+  }
+
+  private function createCompareFunction() {
     $orderBy = $this->orderBy;
     $descending = $this->descending;
-    $compare = function($object1, $object2) use ($orderBy, $descending) {
+    return function($object1, $object2) use ($orderBy, $descending) {
       $a = $object1->$orderBy;
       $b = $object2->$orderBy;
       if ( $a == $b ) {
         return 0;
-      }
-      if ( $descending ) {
+      } else if ( $descending ) {
         return ( $a > $b ) ? -1 : 1;
       } else {
         return ( $a > $b ) ? 1 : -1;
       }
     };
-    usort($rankables, $compare);
+
   }
 
 }
