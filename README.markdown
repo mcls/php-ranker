@@ -26,7 +26,7 @@ $objectsToRank = array(
     
 $ranker = new Ranker();
 $ranker
-   ->useStrategy('dense');     // Use the dense ranking strategy
+   ->useStrategy('dense')      // Use the dense ranking strategy
    ->orderBy('points')         // Property to base ranking on, Default is 'score'
    ->storeRankingIn('ranked')  // Default is 'ranking'
    ->rank($objectsToRank);  
@@ -43,4 +43,14 @@ Array (
    [2] => stdClass Object ( [name] => second (2) [points] => 75    [ranked] => 2 ) 
    [3] => stdClass Object ( [name] => third      [points] => 50    [ranked] => 3 ) 
 )
+```
+
+#### Ranking already sorted items
+
+If you've fetched some objects from the database which have already been sorted then you can 
+set the second parameter of `rank()` to `FALSE`, which will improve your performance when ranking large arrays.
+
+```php
+<?php
+$ranker->rank($alreadySortedObjects, FALSE);
 ```
