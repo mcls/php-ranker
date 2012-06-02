@@ -48,7 +48,7 @@ Array (
 #### Ranking already sorted items
 
 If you've fetched some objects from the database which have already been sorted then you can 
-set the second parameter of `rank()` to `FALSE`, which will improve your performance when ranking large arrays.
+set the second parameter of `rank()` to `FALSE`. This will improve your performance when ranking large arrays.
 
 ```php
 <?php
