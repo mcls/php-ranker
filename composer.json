@@ -1,5 +1,5 @@
 {
-    "name": "nichols/php-ranker",
+    "name": "joeyquarters/php-ranker",
     "description": "A simple class to assign rankings to objects in an array based on one of their properties.",
     "type": "library",
     "license": "Apache-2.0",
