@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012 Maarten Claes 
+ * Copyright 2012 Maarten Claes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-abstract class RankingStrategy {
+
+namespace Ranker\RankingStrategy;
+
+abstract class Base {
 
   protected $orderBy = 'score';
   protected $rankingProperty = 'ranking';
@@ -23,7 +26,7 @@ abstract class RankingStrategy {
   public function setOrderBy($property) {
     $this->orderBy = $property;
   }
- 
+
   /**
    * Set the property to store the ranking in.
    * @param String $property Ranking property
@@ -58,7 +61,7 @@ abstract class RankingStrategy {
   abstract protected function whenEqual($rankable, $ranking_index);
 
   abstract protected function whenDifferent($rankable, $ranking_index);
-  
+
   protected function setRanking(&$rankable, $ranking) {
     $rankable->{$this->rankingProperty} = $ranking;
   }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012 Maarten Claes 
+ * Copyright 2012 Maarten Claes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-include 'src/RankingStrategy.php';
-include 'src/StandardCompetitionStrategy.php';
-include 'src/ModifiedCompetitionStrategy.php';
-include 'src/DenseStrategy.php';
-include 'src/OrdinalStrategy.php';
+
+namespace Ranker;
+
+use Ranker\RankingStrategy\Ordinal;
+use Ranker\RankingStrategy\StandardCompetition;
+use Ranker\RankingStrategy\ModifiedCompetition;
+use Ranker\RankingStrategy\Dense;
 
 class Ranker {
-  
+
   // Ranking strategy
-  private $strategyName = 'ordinal'; 
+  private $strategyName = 'ordinal';
   private $strategy;
   // Options
   private $rankingProperty = 'ranking';
@@ -31,11 +33,11 @@ class Ranker {
   private $descending = TRUE;
 
   public function __construct() {
-    $this->strategy = new OrdinalStrategy();
+    $this->strategy = new Ordinal();
   }
-  
+
   /**
-   * Sets a ranking strategy. The possibilities are:  
+   * Sets a ranking strategy. The possibilities are:
    * - 'competition' : Standard Competition Ranking ( 1224 )
    * - 'modified'    : Modified Competition Ranking ( 1334 )
    * - 'dense'       : Dense Ranking                ( 1223 )
@@ -46,20 +48,20 @@ class Ranker {
   public function useStrategy($strategyName) {
     switch ($strategyName) {
       case 'competition':
-        $this->strategy = new StandardCompetitionStrategy();
+        $this->strategy = new StandardCompetition();
         break;
       case 'modified':
-        $this->strategy = new ModifiedCompetitionStrategy();
+        $this->strategy = new ModifiedCompetition();
         break;
       case 'dense':
-        $this->strategy = new DenseStrategy();
+        $this->strategy = new Dense();
         break;
       case 'ordinal':
-        $this->strategy = new OrdinalStrategy();
+        $this->strategy = new Ordinal();
         break;
       default:
-        throw new UnknownRankingStrategyException("Ranking strategy '$strategyName' not found!");
-    } 
+        throw new \Exception("Ranking strategy '$strategyName' not found!");
+    }
     $this->strategyName = $strategyName;
     return $this;
   }
@@ -89,7 +91,7 @@ class Ranker {
   }
 
   /**
-   * Ranks and sorts the provided array. The ranking number will be added to 
+   * Ranks and sorts the provided array. The ranking number will be added to
    * the 'ranking' property of the objects.
    * @param Array &$rankables Array of objects to rank
    * @param Boolean $sortBeforeRanking Whether or not to sort the rankables before asigning ranks
@@ -104,7 +106,7 @@ class Ranker {
   }
 
   /**
-   * Sort the provided array without assigning rankings. 
+   * Sort the provided array without assigning rankings.
    * @param Array &$rankables Array of objects to sort.
    * @param Boolean $descending Ascending or descending.
    */
@@ -131,5 +133,3 @@ class Ranker {
   }
 
 }
-
-class UnknownRankingStrategyException extends Exception {}
