@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012 Maarten Claes 
+ * Copyright 2012 Maarten Claes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-/**
- * Standard competition strategy ( 1224 )
- */ 
-class StandardCompetitionStrategy extends RankingStrategy {
-  
-  protected function whenEqual($rankable, $ranking_index) {
-    $this->setRanking($rankable, $this->last_rankable->ranking);
-  }
 
-  protected function whenDifferent($rankable, $ranking_index) {
+namespace Ranker\RankingStrategy;
+
+/**
+ * Ordinal ranking strategy ( 1234 )
+ */
+class Ordinal extends Base {
+
+  protected function assignRanking($rankable, $ranking_index) {
     $this->setRanking($rankable, $ranking_index + 1);
   }
 
+  // Not used
+  protected function whenEqual($rankable, $ranking_index) {}
+  protected function whenDifferent($rankable, $ranking_index) {}
+
 }
+

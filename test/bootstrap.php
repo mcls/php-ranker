@@ -1,2 +1,3 @@
 <?php
-require 'Ranker.php';
+
+require('vendor/autoload.php');

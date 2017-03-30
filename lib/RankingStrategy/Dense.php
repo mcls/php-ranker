@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012 Maarten Claes 
+ * Copyright 2012 Maarten Claes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
+namespace Ranker\RankingStrategy;
+
 /**
  * Dense ranking strategy ( 1223 )
- */ 
-class DenseStrategy extends RankingStrategy {
+ */
+class Dense extends Base {
 
   protected function whenEqual($rankable, $ranking_index) {
     $this->setRanking($rankable, $this->last_rankable->ranking);
@@ -28,4 +30,4 @@ class DenseStrategy extends RankingStrategy {
     $this->setRanking($rankable, $this->last_rankable->ranking + 1);
   }
 
-} 
+}

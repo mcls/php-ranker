@@ -1,0 +1,27 @@
+{
+    "name": "joeyquarters/php-ranker",
+    "description": "A simple class to assign rankings to objects in an array based on one of their properties.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Maarten Claes",
+            "email": "maartencls@gmail.com"
+        },
+        {
+            "name": "Joey Nichols",
+            "email": "joeyquarters@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "Ranker\\": "lib/"
+        }
+    }
+}

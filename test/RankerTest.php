@@ -1,4 +1,7 @@
 <?php
+
+use Ranker\Ranker;
+
 class RankerTest extends PHPUnit_Framework_TestCase {
 
   private $rankables = array();
@@ -7,17 +10,17 @@ class RankerTest extends PHPUnit_Framework_TestCase {
   public function setUp() {
     $this->ranker = new Ranker();
 
-    $this->rankables[] = $this->createRankable("bbb", 75);  
-    $this->rankables[] = $this->createRankable("ddd", 50);  
-    $this->rankables[] = $this->createRankable("ccc", 75);  
-    $this->rankables[] = $this->createRankable("aaa", 100);  
+    $this->rankables[] = $this->createRankable("bbb", 75);
+    $this->rankables[] = $this->createRankable("ddd", 50);
+    $this->rankables[] = $this->createRankable("ccc", 75);
+    $this->rankables[] = $this->createRankable("aaa", 100);
 
-    $this->rankables[] = $this->createRankable("eee", 5);  
-    $this->rankables[] = $this->createRankable("fff", 5);  
-    $this->rankables[] = $this->createRankable("ggg", 5);  
-    
-    $this->rankables[] = $this->createRankable("hhh", 1);  
-    $this->rankables[] = $this->createRankable("iii", 0);  
+    $this->rankables[] = $this->createRankable("eee", 5);
+    $this->rankables[] = $this->createRankable("fff", 5);
+    $this->rankables[] = $this->createRankable("ggg", 5);
+
+    $this->rankables[] = $this->createRankable("hhh", 1);
+    $this->rankables[] = $this->createRankable("iii", 0);
   }
 
   private function createRankable($name, $score, $rankingProperty = 'ranking') {
@@ -29,13 +32,17 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     );
   }
 
+  public function testInstanceOfRanker() {
+    $this->assertInstanceOf('Ranker\Ranker', $this->ranker);
+  }
+
   public function testSettingRankingStrategy() {
     $this->ranker->useStrategy('competition');
     $this->assertEquals("competition", $this->ranker->getRankingStrategy());
   }
- 
+
   /**
-   * @expectedException UnknownRankingStrategyException
+   * @expectedException Exception
    */
   public function testSettingNonExistingRankingStrategyThrowsException() {
     $this->ranker->useStrategy('dmsqlfkjds');
@@ -45,7 +52,7 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->ranker->sort($this->rankables);
     $this->assertFirstAndLastNameValue('aaa', 'iii');
   }
-  
+
   public function testSortAscending() {
     $this->ranker->orderBy('score', FALSE);
     $this->ranker->sort($this->rankables);
@@ -59,12 +66,12 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $actual_last = $this->rankables[$last]->name;
     $this->assertEquals($expected_last, $actual_last);
   }
-  
+
   public function testCompetitionRanking() {
     $this->applyRankingStrategy('competition');
     $this->assertRanking("122455589", $this->rankables);
   }
-  
+
   public function testModifiedCompetitionRanking() {
     $this->applyRankingStrategy('modified');
     $this->assertRanking("133477789", $this->rankables);
@@ -74,27 +81,27 @@ class RankerTest extends PHPUnit_Framework_TestCase {
     $this->applyRankingStrategy('dense');
     $this->assertRanking("122344456", $this->rankables);
   }
-  
+
   public function testOrdinalRanking() {
     $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
     $this->assertFirstAndLastNameValue('aaa', 'iii');
   }
-  
+
   public function testSettingOrderBy() {
     $this->ranker->orderBy('inverseScore');
     $this->applyRankingStrategy('ordinal');
     $this->assertRanking("123456789", $this->rankables);
     $this->assertFirstAndLastNameValue('iii', 'aaa');
   }
-  
+
   public function testAlternativeRankingProperty() {
     $this->ranker->storeRankingIn('alternateRankingProperty');
     $this->applyRankingStrategy('ordinal');
 
     $this->assertEquals(1, $this->rankables[0]->alternateRankingProperty);
   }
-  
+
   /**
    * Helper to test ranking strategies
    */
@@ -103,8 +110,8 @@ class RankerTest extends PHPUnit_Framework_TestCase {
       ->useStrategy($strategy)
       ->rank($this->rankables);
   }
-  
-  /** 
+
+  /**
    * Helps asserting ranking methods work as expected.
    */
   private function assertRanking($expected, $rankables) {
