@@ -23,7 +23,7 @@ namespace Ranker\RankingStrategy;
 class StandardCompetition extends Base {
 
   protected function whenEqual($rankable, $ranking_index) {
-    $this->setRanking($rankable, $this->last_rankable->ranking);
+     $this->setRanking($rankable, $this->last_rankable->{$this->rankingProperty});
   }
 
   protected function whenDifferent($rankable, $ranking_index) {
